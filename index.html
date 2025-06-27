@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>席替えメーカー</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>🪑 席替えメーカー</h1>
+            <p>クラスの席替えを簡単にランダム生成！</p>
+        </header>
+
+        <main>
+            <!-- 設定パネルの開閉ボタン -->
+            <div class="panel-controls">
+                <button id="toggle-settings-btn" class="toggle-btn">⚙️ 設定パネル</button>
+                <div class="save-load-controls">
+                    <button id="save-settings-btn" class="control-btn">💾 設定保存</button>
+                    <button id="load-settings-btn" class="control-btn">📂 設定読込</button>
+                    <input type="file" id="settings-file" accept=".json" style="display: none;">
+                </div>
+            </div>
+
+            <div class="config-section" id="config-panel">
+                <div class="input-group">
+                    <label for="rows">行数:</label>
+                    <input type="number" id="rows" min="1" max="10" value="5">
+                </div>
+                <div class="input-group">
+                    <label for="cols">列数:</label>
+                    <input type="number" id="cols" min="1" max="10" value="6">
+                </div>
+                <div class="input-group">
+                    <label for="students">生徒名 (1行1名):</label>
+                    <textarea id="students" rows="8"
+                        placeholder="生徒の名前を1行に1人ずつ入力してください&#10;例:&#10;田中太郎&#10;佐藤花子&#10;山田次郎"></textarea>
+                </div>
+
+                <!-- 列制約設定 -->
+                <div class="constraints-section">
+                    <h3>📍 列制約設定</h3>
+                    <p class="constraints-description">特定の生徒を特定の列に配置したい場合は以下で設定してください</p>
+                    <div id="column-constraints" class="column-constraints">
+                        <!-- 制約設定がここに動的に追加されます -->
+                    </div>
+                    <button type="button" id="add-constraint-btn" class="add-constraint-btn">➕ 制約を追加</button>
+                </div>
+
+                <!-- 固定席設定 -->
+                <div class="fixed-seats-section">
+                    <h3>🔒 固定席設定</h3>
+                    <p class="constraints-description">特定の生徒を特定の席に固定したい場合は以下で設定してください</p>
+                    <div id="fixed-seats" class="fixed-seats">
+                        <!-- 固定席設定がここに動的に追加されます -->
+                    </div>
+                    <button type="button" id="add-fixed-seat-btn" class="add-constraint-btn">🔒 固定席を追加</button>
+                </div>
+
+                <!-- 行制約設定 -->
+                <div class="row-constraints-section">
+                    <h3>📏 行制約設定</h3>
+                    <p class="constraints-description">特定の生徒を特定の行に配置したい場合は以下で設定してください</p>
+                    <div id="row-constraints" class="row-constraints">
+                        <!-- 行制約設定がここに動的に追加されます -->
+                    </div>
+                    <button type="button" id="add-row-constraint-btn" class="add-constraint-btn">📏 行制約を追加</button>
+                </div>
+
+                <div class="button-group">
+                    <button id="shuffle-btn" class="primary-btn">🎲 席替え実行</button>
+                    <button id="clear-btn" class="secondary-btn">🗑️ クリア</button>
+                </div>
+            </div>
+
+            <div class="result-section">
+                <h2>座席表</h2>
+                <div id="seating-chart" class="seating-chart">
+                    <div class="empty-state">
+                        上記の設定を入力して「席替え実行」ボタンを押してください
+                    </div>
+                </div>
+                <div class="export-section">
+                    <div class="export-buttons">
+                        <button id="export-btn" class="export-btn" style="display: none;">📋 テキストコピー</button>
+                        <button id="export-csv-btn" class="export-btn" style="display: none;">📄 CSV出力</button>
+                        <button id="export-image-btn" class="export-btn" style="display: none;">🖼️ 画像出力</button>
+                    </div>
+                    <div class="import-section">
+                        <button id="import-csv-btn" class="import-btn">📤 CSV読込</button>
+                        <input type="file" id="csv-file" accept=".csv" style="display: none;">
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>© 2025 席替えメーカー - シンプルで使いやすい席替えツール</p>
+        </footer>
+    </div>
+
+    <div id="toast" class="toast"></div>
+    <script src="script.js"></script>
+</body>
+
+</html>

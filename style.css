@@ -1,0 +1,612 @@
+/* 席替えメーカー CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+    color: white;
+}
+
+header h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+header p {
+    font-size: 1.2em;
+    opacity: 0.9;
+}
+
+main {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 30px;
+    align-items: start;
+}
+
+/* パネル制御 */
+.panel-controls {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+}
+
+.toggle-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.toggle-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+.save-load-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.control-btn {
+    background: #f8f9fa;
+    color: #495057;
+    border: 2px solid #dee2e6;
+    border-radius: 6px;
+    padding: 8px 15px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s;
+}
+
+.control-btn:hover {
+    background: #e9ecef;
+    transform: translateY(-1px);
+}
+
+.config-section {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.config-section.collapsed {
+    display: none;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #555;
+}
+
+.input-group input[type="number"] {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+.input-group input[type="number"]:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.input-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    resize: vertical;
+    min-height: 120px;
+    transition: border-color 0.3s;
+}
+
+.input-group textarea:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 25px;
+}
+
+/* 列制約設定のスタイル */
+.constraints-section {
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 2px solid #f0f0f0;
+}
+
+/* 行制約設定のスタイル */
+.row-constraints-section {
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 2px solid #f0f0f0;
+}
+
+/* 固定席設定のスタイル */
+.fixed-seats-section {
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 2px solid #f0f0f0;
+}
+
+.constraints-section h3,
+.fixed-seats-section h3 {
+    color: #555;
+    margin-bottom: 8px;
+    font-size: 1.1em;
+}
+
+.constraints-description {
+    color: #666;
+    font-size: 0.9em;
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+.column-constraints {
+    margin-bottom: 15px;
+}
+
+.fixed-seats {
+    margin-bottom: 15px;
+}
+
+.row-constraints {
+    margin-bottom: 15px;
+}
+
+.constraint-item,
+.fixed-seat-item,
+.row-constraint-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    padding: 12px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+}
+
+.fixed-seat-item {
+    background: #fff3cd;
+    border-color: #ffeaa7;
+}
+
+.row-constraint-item {
+    background: #e8f5e8;
+    border-color: #c8e6c9;
+}
+
+.constraint-item select,
+.constraint-item input,
+.fixed-seat-item select,
+.fixed-seat-item input,
+.row-constraint-item select,
+.row-constraint-item input {
+    padding: 6px 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.constraint-item select,
+.fixed-seat-item select,
+.row-constraint-item select {
+    min-width: 120px;
+}
+
+.constraint-item input,
+.fixed-seat-item input,
+.row-constraint-item input {
+    width: 60px;
+    text-align: center;
+}
+
+.constraint-label {
+    font-size: 14px;
+    color: #555;
+    white-space: nowrap;
+}
+
+.remove-constraint-btn {
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 10px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background-color 0.2s;
+}
+
+.remove-constraint-btn:hover {
+    background: #c82333;
+}
+
+.add-constraint-btn {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.3s;
+    width: 100%;
+}
+
+.add-constraint-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(40, 167, 69, 0.3);
+}
+
+.primary-btn,
+.secondary-btn,
+.export-btn {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    flex: 1;
+}
+
+.primary-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.primary-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+.secondary-btn {
+    background: #f8f9fa;
+    color: #6c757d;
+    border: 2px solid #dee2e6;
+}
+
+.secondary-btn:hover {
+    background: #e9ecef;
+    transform: translateY(-1px);
+}
+
+.result-section {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+.result-section h2 {
+    margin-bottom: 20px;
+    color: #555;
+    text-align: center;
+}
+
+.seating-chart {
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    background: #f8f9fa;
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.empty-state {
+    text-align: center;
+    color: #6c757d;
+    font-style: italic;
+}
+
+.desk-grid {
+    display: grid;
+    gap: 8px;
+    justify-content: center;
+    width: 100%;
+}
+
+.desk {
+    background: linear-gradient(145deg, #ffffff, #f0f0f0);
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    padding: 12px 8px;
+    text-align: center;
+    font-weight: bold;
+    color: #333;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+    font-size: 14px;
+    word-break: break-all;
+}
+
+.desk:hover {
+    transform: scale(1.05);
+}
+
+.desk.empty {
+    background: #f8f9fa;
+    color: #adb5bd;
+    border-style: dashed;
+}
+
+.desk.fixed-seat {
+    background: linear-gradient(145deg, #fff3cd, #ffeaa7);
+    border: 2px solid #f39c12;
+    color: #856404;
+    position: relative;
+}
+
+.desk.fixed-seat::before {
+    content: "🔒";
+    position: absolute;
+    top: 2px;
+    right: 4px;
+    font-size: 12px;
+    opacity: 0.7;
+}
+
+/* ドラッグ&ドロップのスタイル */
+.desk.draggable {
+    cursor: move;
+    user-select: none;
+}
+
+.desk.dragging {
+    opacity: 0.5;
+    transform: rotate(5deg);
+}
+
+.desk.drop-target {
+    background: linear-gradient(145deg, #e3f2fd, #bbdefb);
+    border: 2px dashed #2196f3;
+}
+
+.desk.drop-active {
+    background: linear-gradient(145deg, #c8e6c9, #a5d6a7);
+    border: 2px solid #4caf50;
+}
+
+.export-section {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.export-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+}
+
+.export-btn {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.export-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+}
+
+/* インポートセクション */
+.import-section {
+    margin-top: 10px;
+}
+
+.import-btn {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.import-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
+}
+
+footer {
+    text-align: center;
+    margin-top: 30px;
+    color: white;
+    opacity: 0.8;
+}
+
+.toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #28a745;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transform: translateX(400px);
+    transition: transform 0.3s;
+    z-index: 1000;
+    display: none;
+}
+
+.toast.show {
+    transform: translateX(0);
+    display: block;
+}
+
+.toast.success {
+    background: #28a745;
+}
+
+.toast.error {
+    background: #dc3545;
+}
+
+.toast.warning {
+    background: #ffc107;
+    color: #212529;
+}
+
+.toast.info {
+    background: #17a2b8;
+}
+
+/* レスポンシブデザイン */
+@media (max-width: 768px) {
+    main {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    header h1 {
+        font-size: 2em;
+    }
+
+    .container {
+        padding: 15px;
+    }
+
+    .config-section,
+    .result-section {
+        padding: 20px;
+    }
+
+    .button-group {
+        flex-direction: column;
+    }
+
+    .desk {
+        font-size: 12px;
+        min-height: 50px;
+        padding: 8px 4px;
+    }
+
+    .constraint-item {
+        flex-direction: column;
+        gap: 8px;
+        align-items: stretch;
+    }
+
+    .constraint-item select,
+    .constraint-item input {
+        width: 100%;
+    }
+
+    .fixed-seat-item {
+        flex-direction: column;
+        gap: 8px;
+        align-items: stretch;
+    }
+
+    .fixed-seat-item select,
+    .fixed-seat-item input {
+        width: 100%;
+    }
+
+    .row-constraint-item {
+        flex-direction: column;
+        gap: 8px;
+        align-items: stretch;
+    }
+
+    .row-constraint-item select,
+    .row-constraint-item input {
+        width: 100%;
+    }
+
+    .export-buttons {
+        flex-direction: column;
+    }
+
+    .panel-controls {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .save-load-controls {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .desk-grid {
+        gap: 4px;
+    }
+
+    .desk {
+        font-size: 11px;
+        min-height: 45px;
+        padding: 6px 2px;
+    }
+}
